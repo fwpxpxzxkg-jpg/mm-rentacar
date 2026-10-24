@@ -1,0 +1,950 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M&amp;M Tour Transfer &amp; Rent a Car | Makedonya</title>
+<meta name="description" content="M&M Tour Transfer & Rent a Car — Üsküp, Tetova, Bitola ve Ohri'de araç kiralama, havalimanı transferi ve özel turlar. WhatsApp'tan hemen yazın.">
+<meta name="theme-color" content="#0e0b09">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#f6f0e7; --cream-2:#ece3d5; --cream-3:#e2d5c1;
+  --brown:#5b3f2b; --brown-d:#3b2819; --gold:#b48a58; --gold-l:#d8b98c;
+  --ink:#1e1712; --muted:#7a6a5c; --dark:#0e0b09; --dark-2:#17120e;
+  --wa:#25d366; --wa-d:#128c7e; --red:#d10f1b;
+  --radius:22px; --shadow:0 20px 50px -20px rgba(59,40,25,.35);
+  --serif:'Cormorant Garamond',Georgia,serif; --script:'Great Vibes',cursive; --sans:'Manrope',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--sans);background:var(--cream);color:var(--ink);line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+body.locked{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img,svg{display:block}
+.wrap{width:min(1200px,100% - 32px);margin-inline:auto}
+
+/* ---------- Loader ---------- */
+#loader{position:fixed;inset:0;z-index:100;background:var(--cream);display:grid;place-items:center;transition:opacity .9s ease,visibility .9s}
+#loader.out{opacity:0;visibility:hidden}
+.ld-in{text-align:center}
+.ld-logo{font-family:var(--serif);font-size:clamp(64px,12vw,120px);color:var(--brown);font-weight:600;letter-spacing:.02em;line-height:1}
+.ld-logo span{display:inline-block;opacity:0;transform:translateY(30px);animation:up .9s cubic-bezier(.2,.8,.2,1) forwards}
+.ld-logo span:nth-child(2){animation-delay:.15s;color:var(--gold)}
+.ld-logo span:nth-child(3){animation-delay:.3s}
+.ld-sub{margin-top:10px;font-family:var(--serif);font-size:18px;color:var(--brown);letter-spacing:.08em;opacity:0;animation:fade 1s .5s forwards}
+.ld-bar{width:220px;height:2px;background:var(--cream-3);margin:28px auto 10px;overflow:hidden;border-radius:2px}
+.ld-bar i{display:block;height:100%;width:4%;background:linear-gradient(90deg,var(--gold),var(--brown));transition:width .3s ease}
+.ld-pct{font-size:12px;letter-spacing:.25em;color:var(--muted)}
+@keyframes up{to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+
+/* ---------- Nav ---------- */
+.nav{position:fixed;inset:0 0 auto;z-index:50;transition:background .4s,box-shadow .4s,color .4s;color:var(--cream)}
+.nav .wrap{display:flex;align-items:center;justify-content:space-between;height:76px}
+.nav.solid{background:rgba(246,240,231,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 8px 30px -18px rgba(0,0,0,.3);color:var(--brown-d)}
+.brand{display:flex;align-items:center;gap:12px}
+.brand b{font-family:var(--serif);font-size:32px;font-weight:700;letter-spacing:.02em;line-height:1}
+.brand b em{font-style:normal;color:var(--gold)}
+.brand small{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;opacity:.8;line-height:1.35;border-left:1px solid currentColor;padding-left:12px}
+.nav ul{display:flex;gap:30px;list-style:none;font-size:14px;font-weight:600}
+.nav ul a{opacity:.85;position:relative;padding:6px 0}
+.nav ul a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:1.5px;background:var(--gold);transition:width .3s}
+.nav ul a:hover{opacity:1}.nav ul a:hover::after{width:100%}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:14px 24px;border-radius:999px;font-weight:700;font-size:14.5px;transition:transform .25s,box-shadow .25s,background .25s}
+.btn:hover{transform:translateY(-2px)}
+.btn-gold{background:linear-gradient(135deg,var(--gold-l),var(--gold));color:var(--brown-d);box-shadow:0 12px 30px -12px rgba(180,138,88,.8)}
+.btn-wa{background:var(--wa);color:#fff;box-shadow:0 12px 30px -12px rgba(37,211,102,.8)}
+.btn-ghost{border:1.5px solid rgba(246,240,231,.45);color:var(--cream)}
+.btn-ghost:hover{background:rgba(246,240,231,.1)}
+.btn-dark{background:var(--brown-d);color:var(--cream)}
+.btn svg{width:18px;height:18px}
+.nav .btn{padding:11px 20px;font-size:13.5px}
+.burger{display:none;width:44px;height:44px;border-radius:12px;place-items:center}
+.burger span{display:block;width:22px;height:2px;background:currentColor;margin:5px auto;transition:.3s}
+.mnav{position:fixed;inset:0;z-index:49;background:var(--dark);color:var(--cream);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:26px;font-family:var(--serif);font-size:34px;opacity:0;visibility:hidden;transition:.4s}
+.mnav.open{opacity:1;visibility:visible}
+
+/* ---------- Hero ---------- */
+#hero{position:relative;height:100svh;min-height:620px;background:radial-gradient(120% 90% at 70% 60%,#2a1d14 0%,var(--dark) 60%);overflow:hidden;color:var(--cream)}
+#scene{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity 1.6s ease}
+body.ready #scene{opacity:1}
+#hero::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(90deg,rgba(14,11,9,.85) 0%,rgba(14,11,9,.35) 38%,rgba(14,11,9,0) 60%),linear-gradient(0deg,rgba(14,11,9,.9) 0%,rgba(14,11,9,0) 28%)}
+.hero-in{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:center;padding-top:40px}
+.hero-txt{max-width:560px}
+.eyebrow{font-size:12px;letter-spacing:.32em;font-weight:700;color:var(--gold-l);display:flex;align-items:center;gap:12px}
+.eyebrow::before{content:"";width:34px;height:1px;background:var(--gold-l)}
+.hero h1{font-family:var(--serif);font-weight:600;font-size:clamp(44px,6.2vw,86px);line-height:1;margin:18px 0 0;letter-spacing:-.005em}
+.hero .script{font-family:var(--script);font-size:clamp(46px,6vw,84px);color:var(--gold-l);line-height:1.05;display:block;margin-top:4px;font-weight:400}
+.hero p{margin:22px 0 32px;font-size:17px;color:rgba(246,240,231,.78);max-width:470px}
+.hero-cta{display:flex;flex-wrap:wrap;gap:14px}
+.reveal-h > *{opacity:0;transform:translateY(26px);transition:opacity 1s cubic-bezier(.2,.8,.2,1),transform 1s cubic-bezier(.2,.8,.2,1)}
+body.ready .reveal-h > *{opacity:1;transform:none}
+body.ready .reveal-h > *:nth-child(2){transition-delay:.12s}
+body.ready .reveal-h > *:nth-child(3){transition-delay:.24s}
+body.ready .reveal-h > *:nth-child(4){transition-delay:.36s}
+.hero-bottom{position:absolute;z-index:3;left:0;right:0;bottom:28px}
+.hero-bottom .wrap{display:flex;justify-content:space-between;align-items:flex-end;gap:20px}
+.feats{display:flex;gap:34px}
+.feats div{font-size:13px;color:rgba(246,240,231,.7);line-height:1.35}
+.feats b{display:block;font-family:var(--serif);font-size:26px;color:var(--cream);font-weight:600}
+.swatches{margin-right:80px;display:flex;align-items:center;gap:12px;background:rgba(246,240,231,.07);border:1px solid rgba(246,240,231,.14);backdrop-filter:blur(10px);padding:10px 14px;border-radius:999px;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:rgba(246,240,231,.75)}
+.swatches button{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.35);transition:transform .2s,border-color .2s}
+.swatches button:hover{transform:scale(1.15)}
+.swatches button.on{border-color:#fff;transform:scale(1.18);box-shadow:0 0 0 3px rgba(255,255,255,.12)}
+.scroll-hint{position:absolute;z-index:3;left:50%;bottom:30px;transform:translateX(-50%);width:26px;height:42px;border:1.5px solid rgba(246,240,231,.4);border-radius:14px}
+.scroll-hint::after{content:"";position:absolute;left:50%;top:8px;width:3px;height:8px;margin-left:-1.5px;border-radius:2px;background:var(--gold-l);animation:sh 1.8s infinite}
+@keyframes sh{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(14px)}}
+#hero.no3d{background:radial-gradient(80% 70% at 75% 65%,rgba(209,15,27,.35),transparent 60%),radial-gradient(120% 90% at 70% 60%,#2a1d14 0%,var(--dark) 60%)}
+
+/* ---------- Sections ---------- */
+section{padding:110px 0}
+.sec-head{text-align:center;max-width:680px;margin:0 auto 56px}
+.sec-head .eyebrow{justify-content:center;color:var(--gold)}
+.sec-head .eyebrow::after{content:"";width:34px;height:1px;background:var(--gold)}
+.sec-head .eyebrow::before{background:var(--gold)}
+.sec-head h2{font-family:var(--serif);font-size:clamp(38px,4.6vw,58px);font-weight:600;color:var(--brown-d);line-height:1.05;margin-top:14px}
+.sec-head h2 .script{font-family:var(--script);font-weight:400;color:var(--gold)}
+.sec-head p{color:var(--muted);margin-top:14px;font-size:16.5px}
+.rv{opacity:0;transform:translateY(34px);transition:opacity .9s cubic-bezier(.2,.8,.2,1),transform .9s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* services */
+.services{display:grid;grid-template-columns:repeat(4,1fr);gap:22px}
+.svc{background:#fffaf3;border:1px solid var(--cream-3);border-radius:200px 200px var(--radius) var(--radius);padding:56px 26px 34px;text-align:center;transition:transform .35s,box-shadow .35s}
+.svc:hover{transform:translateY(-8px);box-shadow:var(--shadow)}
+.svc .ic{width:70px;height:70px;margin:0 auto 22px;border-radius:50%;display:grid;place-items:center;background:var(--cream-2);color:var(--brown)}
+.svc .ic svg{width:32px;height:32px}
+.svc h3{font-family:var(--serif);font-size:25px;color:var(--brown-d);font-weight:700;letter-spacing:.02em}
+.svc p{color:var(--muted);font-size:14.5px;margin-top:8px}
+
+/* fleet */
+#filo{background:var(--cream-2)}
+.tabs{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin:-24px 0 40px}
+.tabs button{padding:10px 20px;border-radius:999px;font-weight:600;font-size:14px;color:var(--brown);border:1px solid var(--cream-3);background:#fffaf3;transition:.25s}
+.tabs button.on,.tabs button:hover{background:var(--brown-d);color:var(--cream);border-color:var(--brown-d)}
+.fleet{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.car{background:#fffaf3;border-radius:var(--radius);overflow:hidden;border:1px solid var(--cream-3);display:flex;flex-direction:column;transition:transform .35s,box-shadow .35s}
+.car:hover{transform:translateY(-6px);box-shadow:var(--shadow)}
+.car.hide{display:none}
+.car-vis{position:relative;height:190px;background:radial-gradient(70% 80% at 50% 90%,#fff 0%,var(--cream-2) 70%);display:grid;place-items:center;overflow:hidden}
+.car-vis svg{width:82%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.car:hover .car-vis svg{transform:translateX(10px) scale(1.04)}
+.car-tag{position:absolute;top:14px;left:14px;font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;background:var(--brown-d);color:var(--cream);padding:6px 11px;border-radius:999px}
+.car-tag.alt{left:auto;right:14px;background:var(--gold);color:var(--brown-d)}
+.car-body{padding:22px 24px 24px;display:flex;flex-direction:column;flex:1}
+.car-body h3{font-family:var(--serif);font-size:28px;color:var(--brown-d);font-weight:700;line-height:1.1}
+.car-body .cls{font-size:13px;color:var(--muted)}
+.specs{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 18px}
+.specs span{font-size:12.5px;font-weight:600;background:var(--cream-2);color:var(--brown);padding:6px 10px;border-radius:8px;display:inline-flex;align-items:center;gap:6px}
+.specs svg{width:14px;height:14px}
+.car-foot{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-top:1px dashed var(--cream-3);padding-top:16px}
+.price small{display:block;font-size:12px;color:var(--muted)}
+.price b{font-family:var(--serif);font-size:38px;color:var(--brown-d);line-height:1}
+.price b sub{font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:600;vertical-align:baseline;margin-left:2px}
+.price .disc{font-size:12px;color:#2f7d4a;font-weight:700}
+.car-foot .btn{padding:11px 16px;font-size:13px}
+.note{text-align:center;color:var(--muted);font-size:13px;margin-top:30px}
+
+/* transfer */
+.split{display:grid;grid-template-columns:1fr 1.1fr;gap:60px;align-items:center}
+.split .sec-head{text-align:left;margin:0 0 26px}
+.split .sec-head .eyebrow{justify-content:flex-start}
+.split .sec-head .eyebrow::after{display:none}
+.checks{list-style:none;display:grid;gap:14px;margin-bottom:30px}
+.checks li{display:flex;gap:12px;align-items:flex-start;color:var(--brown)}
+.checks li::before{content:"";flex:none;width:22px;height:22px;border-radius:50%;margin-top:2px;background:var(--gold) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%233b2819' stroke-width='3'%3E%3Cpath d='M5 12l5 5 9-10'/%3E%3C/svg%3E") center/13px no-repeat}
+.ttable{background:#fffaf3;border-radius:var(--radius);border:1px solid var(--cream-3);overflow:hidden;box-shadow:var(--shadow)}
+.ttable .th{display:flex;justify-content:space-between;align-items:center;padding:20px 26px;background:var(--brown-d);color:var(--cream)}
+.ttable .th b{font-family:var(--serif);font-size:24px;font-weight:600}
+.ttable .th span{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-l)}
+.trow{display:flex;align-items:center;justify-content:space-between;padding:16px 26px;border-top:1px solid var(--cream-2);transition:background .2s;cursor:pointer}
+.trow:hover{background:var(--cream-2)}
+.trow .from{display:flex;align-items:center;gap:12px;font-weight:600;color:var(--brown-d)}
+.trow .from i{font-style:normal;color:var(--muted);font-weight:500;font-size:13px}
+.trow .pr{font-family:var(--serif);font-size:24px;font-weight:700;color:var(--brown)}
+.trow .pr small{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:600;margin-right:6px}
+
+/* tours */
+#turlar{background:var(--dark);color:var(--cream)}
+#turlar .sec-head h2{color:var(--cream)}
+#turlar .sec-head p{color:rgba(246,240,231,.65)}
+.tours{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.tour{position:relative;border-radius:var(--radius);overflow:hidden;min-height:400px;display:flex;flex-direction:column;justify-content:flex-end;padding:26px;isolation:isolate;transition:transform .4s}
+.tour:hover{transform:translateY(-8px)}
+.tour::before{content:"";position:absolute;inset:0;z-index:-2;background:var(--bg);transition:transform .8s}
+.tour:hover::before{transform:scale(1.08)}
+.tour::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(0deg,rgba(14,11,9,.92) 10%,rgba(14,11,9,.1) 65%)}
+.tour .deco{position:absolute;top:24px;right:22px;width:84px;opacity:.55}
+.tour .num{position:absolute;top:22px;left:24px;font-family:var(--serif);font-size:15px;letter-spacing:.2em;color:var(--gold-l)}
+.tour h3{font-family:var(--serif);font-size:36px;font-weight:600;line-height:1}
+.tour p{font-size:14px;color:rgba(246,240,231,.72);margin:10px 0 16px}
+.tour .tp{display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(246,240,231,.18);padding-top:14px}
+.tour .tp b{font-family:var(--serif);font-size:26px;color:var(--gold-l)}
+.tour .tp small{font-size:12px;color:rgba(246,240,231,.6);display:block}
+.tour .tp button{width:44px;height:44px;border-radius:50%;background:var(--wa);display:grid;place-items:center;transition:transform .25s}
+.tour .tp button:hover{transform:scale(1.1) rotate(-8deg)}
+.tour .tp button svg{width:22px;height:22px;color:#fff}
+
+/* booking */
+#rezervasyon{background:linear-gradient(180deg,var(--cream) 0%,var(--cream-2) 100%)}
+.book{display:grid;grid-template-columns:1.25fr .75fr;background:#fffaf3;border-radius:28px;overflow:hidden;border:1px solid var(--cream-3);box-shadow:var(--shadow)}
+.book form{padding:44px;display:grid;grid-template-columns:1fr 1fr;gap:18px 20px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field.full{grid-column:1/-1}
+.field label{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.field input,.field select,.field textarea{font:inherit;font-size:15px;padding:14px 16px;border-radius:14px;border:1.5px solid var(--cream-3);background:var(--cream);color:var(--ink);outline:none;transition:border-color .2s,box-shadow .2s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--gold);box-shadow:0 0 0 4px rgba(180,138,88,.15)}
+.seg{display:flex;gap:8px;grid-column:1/-1}
+.seg button{flex:1;padding:12px;border-radius:14px;border:1.5px solid var(--cream-3);font-weight:700;color:var(--brown);font-size:14px;transition:.2s}
+.seg button.on{background:var(--brown-d);border-color:var(--brown-d);color:var(--cream)}
+.summary{background:var(--brown-d);color:var(--cream);padding:44px 36px;display:flex;flex-direction:column}
+.summary h3{font-family:var(--serif);font-size:30px;font-weight:600}
+.summary .script{font-family:var(--script);color:var(--gold-l);font-size:30px;line-height:1}
+.sum-rows{margin:26px 0;display:grid;gap:12px;font-size:14.5px}
+.sum-rows div{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid rgba(246,240,231,.12);padding-bottom:10px}
+.sum-rows span{color:rgba(246,240,231,.6)}
+.sum-rows b{text-align:right;font-weight:600}
+.total{margin-top:auto}
+.total small{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--gold-l)}
+.total b{display:block;font-family:var(--serif);font-size:56px;line-height:1.05;font-weight:700}
+.total p{font-size:12px;color:rgba(246,240,231,.55);margin:6px 0 20px}
+.summary .btn{justify-content:center;width:100%}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;counter-reset:st}
+.step{padding:34px 30px;border-radius:var(--radius);background:#fffaf3;border:1px solid var(--cream-3);position:relative}
+.step::before{counter-increment:st;content:"0" counter(st);font-family:var(--serif);font-size:64px;font-weight:700;color:var(--cream-3);position:absolute;right:24px;top:10px;line-height:1}
+.step h3{font-family:var(--serif);font-size:26px;color:var(--brown-d);margin-bottom:8px}
+.step p{color:var(--muted);font-size:15px}
+
+/* footer */
+footer{background:var(--dark);color:rgba(246,240,231,.75);padding:80px 0 30px}
+.foot{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:40px}
+.foot .brand{color:var(--cream);margin-bottom:16px}
+.foot .script{font-family:var(--script);font-size:34px;color:var(--gold-l);line-height:1.2}
+.foot h4{font-family:var(--serif);color:var(--cream);font-size:22px;margin-bottom:14px;font-weight:600}
+.foot ul{list-style:none;display:grid;gap:10px;font-size:15px}
+.foot a:hover{color:var(--gold-l)}
+.contact a{display:flex;align-items:center;gap:10px}
+.contact svg{width:18px;height:18px;color:var(--gold-l)}
+.copy{border-top:1px solid rgba(246,240,231,.1);margin-top:50px;padding-top:24px;display:flex;justify-content:space-between;font-size:13px;color:rgba(246,240,231,.45);flex-wrap:wrap;gap:10px}
+
+/* ---------- WhatsApp widget ---------- */
+.wa-fab{position:fixed;right:22px;bottom:22px;z-index:60;width:64px;height:64px;border-radius:50%;background:var(--wa);display:grid;place-items:center;box-shadow:0 14px 34px -8px rgba(37,211,102,.7);transition:transform .3s}
+.wa-fab:hover{transform:scale(1.08)}
+.wa-fab svg{width:34px;height:34px;color:#fff;transition:transform .3s,opacity .3s;position:absolute}
+.wa-fab .x{opacity:0;transform:rotate(-90deg);width:26px;height:26px}
+.wa-fab.open .logo{opacity:0;transform:rotate(90deg)}
+.wa-fab.open .x{opacity:1;transform:none}
+.wa-fab::before{content:"";position:absolute;inset:0;border-radius:50%;background:var(--wa);z-index:-1;animation:pulse 2.4s infinite}
+.wa-fab.open::before{animation:none}
+@keyframes pulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.7);opacity:0}}
+.wa-dot{position:absolute;top:2px;right:2px;width:18px;height:18px;border-radius:50%;background:#ff3b30;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;border:2px solid #fff}
+.wa-fab.open .wa-dot,.wa-fab.seen .wa-dot{display:none}
+.wa-teaser{position:fixed;right:24px;bottom:100px;z-index:60;background:#fff;color:var(--ink);padding:12px 16px;border-radius:16px 16px 4px 16px;box-shadow:0 14px 40px -12px rgba(0,0,0,.35);font-size:14px;font-weight:600;max-width:230px;opacity:0;transform:translateY(10px) scale(.95);transform-origin:bottom right;transition:.4s;pointer-events:none}
+.wa-teaser.show{opacity:1;transform:none;pointer-events:auto;cursor:pointer}
+.wa-panel{position:fixed;right:22px;bottom:100px;z-index:60;width:min(370px,calc(100vw - 32px));border-radius:22px;overflow:hidden;background:#efeae2;box-shadow:0 30px 70px -20px rgba(0,0,0,.45);opacity:0;transform:translateY(20px) scale(.96);transform-origin:bottom right;visibility:hidden;transition:opacity .3s,transform .35s cubic-bezier(.2,.8,.2,1),visibility .35s;display:flex;flex-direction:column;max-height:min(600px,calc(100svh - 130px))}
+.wa-panel.open{opacity:1;transform:none;visibility:visible}
+.wa-head{background:var(--wa-d);color:#fff;padding:16px 18px;display:flex;align-items:center;gap:12px}
+.wa-av{width:46px;height:46px;border-radius:50%;background:var(--cream);color:var(--brown-d);display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:18px;position:relative;flex:none}
+.wa-av::after{content:"";position:absolute;right:1px;bottom:1px;width:11px;height:11px;border-radius:50%;background:#4ade80;border:2px solid var(--wa-d)}
+.wa-head b{display:block;font-size:15.5px}
+.wa-head small{font-size:12.5px;opacity:.85}
+.wa-body{padding:18px 16px;overflow-y:auto;flex:1;background-color:#efeae2;background-image:radial-gradient(rgba(0,0,0,.035) 1px,transparent 1px);background-size:14px 14px}
+.bub{background:#fff;padding:10px 13px 8px;border-radius:0 12px 12px 12px;font-size:14px;max-width:88%;box-shadow:0 1px 1px rgba(0,0,0,.08);margin-bottom:12px;animation:pop .4s both}
+.bub time{display:block;text-align:right;font-size:10.5px;color:#8696a0;margin-top:2px}
+@keyframes pop{from{opacity:0;transform:translateY(8px)}}
+.q-lbl{font-size:11.5px;font-weight:700;color:#667781;letter-spacing:.08em;text-transform:uppercase;margin:16px 4px 8px}
+.qs{display:grid;gap:7px}
+.qs button{text-align:left;background:#fff;border:1px solid #d9fdd3;border-left:3px solid var(--wa);padding:10px 12px;border-radius:10px;font-size:13.5px;font-weight:600;color:#1f2c34;transition:.2s;display:flex;align-items:center;gap:10px;animation:pop .4s both}
+.qs button:hover{background:#d9fdd3;transform:translateX(3px)}
+.qs button span{font-size:17px}
+.wa-foot{display:flex;gap:8px;padding:10px;background:#f0f2f5}
+.wa-foot input{flex:1;border:0;border-radius:999px;padding:12px 16px;font:inherit;font-size:14px;outline:none;background:#fff}
+.wa-foot button{width:44px;height:44px;border-radius:50%;background:var(--wa);display:grid;place-items:center;flex:none}
+.wa-foot button svg{width:20px;height:20px;color:#fff}
+
+/* ---------- Responsive ---------- */
+@media (max-width:1024px){
+  .services,.tours{grid-template-columns:repeat(2,1fr)}
+  .fleet{grid-template-columns:repeat(2,1fr)}
+  .split,.book{grid-template-columns:1fr}
+  .nav ul,.nav .btn{display:none}
+  .burger{display:grid}
+}
+@media (max-width:700px){
+  section{padding:80px 0}
+  .services,.tours,.fleet,.steps,.foot{grid-template-columns:1fr}
+  .svc{border-radius:var(--radius);padding:34px 24px}
+  .hero-in{justify-content:flex-start;padding-top:120px}
+  #hero::after{background:linear-gradient(180deg,rgba(14,11,9,.85) 0%,rgba(14,11,9,.2) 45%,rgba(14,11,9,0) 60%),linear-gradient(0deg,rgba(14,11,9,.95) 0%,rgba(14,11,9,0) 30%)}
+  .hero p{font-size:15.5px;margin:16px 0 24px}
+  .hero-bottom .wrap{flex-direction:column;align-items:flex-start}
+  .feats{gap:22px}.feats b{font-size:21px}
+  .scroll-hint{display:none}
+  .book form{padding:26px 20px;grid-template-columns:1fr}
+  .summary{padding:30px 22px}
+  .brand small{display:none}
+  .tour{min-height:320px}
+  .swatches{align-self:stretch;justify-content:center;margin-right:76px}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+<script type="importmap">
+{"imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/":"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+}}
+</script>
+</head>
+<body class="locked">
+
+<!-- Açılış -->
+<div id="loader" aria-hidden="true">
+  <div class="ld-in">
+    <div class="ld-logo"><span>M</span><span>&amp;</span><span>M</span></div>
+    <div class="ld-sub">Tour Transfer &amp; Rent a Car</div>
+    <div class="ld-bar"><i id="ldBar"></i></div>
+    <div class="ld-pct" id="ldPct">MOTOR ISINIYOR…</div>
+  </div>
+</div>
+
+<!-- Menü -->
+<header class="nav" id="nav">
+  <div class="wrap">
+    <a href="#hero" class="brand"><b>M<em>&amp;</em>M</b><small>Tour Transfer<br>&amp; Rent a Car</small></a>
+    <ul>
+      <li><a href="#hizmetler">Hizmetler</a></li>
+      <li><a href="#filo">Araçlar</a></li>
+      <li><a href="#transfer">Transfer</a></li>
+      <li><a href="#turlar">Turlar</a></li>
+      <li><a href="#iletisim">İletişim</a></li>
+    </ul>
+    <a href="#rezervasyon" class="btn btn-gold">Rezervasyon</a>
+    <button class="burger" id="burger" aria-label="Menü"><span></span><span></span></button>
+  </div>
+</header>
+<nav class="mnav" id="mnav">
+  <a href="#hizmetler">Hizmetler</a><a href="#filo">Araçlar</a><a href="#transfer">Transfer</a><a href="#turlar">Turlar</a><a href="#rezervasyon">Rezervasyon</a><a href="#iletisim">İletişim</a>
+</nav>
+
+<!-- Hero / 3D -->
+<section id="hero" class="hero" style="padding:0">
+  <canvas id="scene"></canvas>
+  <div class="wrap hero-in">
+    <div class="hero-txt reveal-h">
+      <div class="eyebrow">KONFORLU • GÜVENİLİR • ÖZEL</div>
+      <h1>Makedonya’da konforlu <span class="script">bir yolculuk deneyimi</span></h1>
+      <p>Havalimanında karşılıyoruz, anahtarı teslim ediyoruz, rotanızı birlikte çiziyoruz. Üsküp’ten Ohri’ye kadar her kilometre bizden.</p>
+      <div class="hero-cta">
+        <a href="#filo" class="btn btn-gold">Araçları Keşfet
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        <button class="btn btn-ghost" data-wa="Merhaba, araç kiralama hakkında bilgi almak istiyorum.">
+          <svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>WhatsApp’tan Yaz</button>
+      </div>
+    </div>
+  </div>
+  <div class="hero-bottom">
+    <div class="wrap">
+      <div class="feats reveal-h">
+        <div><b>7/24</b>WhatsApp destek</div>
+        <div><b>4 şehir</b>Özel tur rotası</div>
+        <div><b>VIP</b>Havalimanı karşılama</div>
+      </div>
+      <div class="swatches" id="swatches">
+        Renk
+        <button class="on" style="background:#d10f1b" data-c="#d10f1b" aria-label="Kırmızı"></button>
+        <button style="background:#111" data-c="#0d0d0f" aria-label="Siyah"></button>
+        <button style="background:#eee9e0" data-c="#e9e4da" aria-label="Beyaz"></button>
+        <button style="background:#8a5a34" data-c="#7a4a26" aria-label="Bronz"></button>
+        <button style="background:#1f4fbf" data-c="#1846b8" aria-label="Mavi"></button>
+      </div>
+    </div>
+  </div>
+  <a href="#hizmetler" class="scroll-hint" aria-label="Aşağı kaydır"></a>
+</section>
+
+<!-- Hizmetler -->
+<section id="hizmetler">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">HİZMETLERİMİZ</div>
+      <h2>Yolculuğunuzun <span class="script">her adımında</span></h2>
+      <p>Siz keşfedin, biz gerisini düşünelim.</p>
+    </div>
+    <div class="services">
+      <div class="svc rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg></div><h3>ÖZEL TURLAR</h3><p>Üsküp, Tetova, Bitola ve Ohri — size özel rota ve şoförle.</p></div>
+      <div class="svc rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.5 13.5l19-6.5-2-2.5-6 1.5L7 2.5 5 3.5l4 4.5-4.5 1.5L2.5 8 1.5 9l3 3.5zM3 20.5h18"/></svg></div><h3>HAVALİMANI TRANSFERİ</h3><p>Zamanında, konforlu ve güvenli ulaşım. Uçuşunuzu biz takip ederiz.</p></div>
+      <div class="svc rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 12l4-4 4 2 3-3 4 1 5 4-4 4-3-2-4 4-4-3-5-3z"/><path d="M10 10l3 3M13 9l3 3"/></svg></div><h3>KARŞILAMA</h3><p>Havalimanında isminizle özel karşılama hizmeti.</p></div>
+      <div class="svc rv"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 15l1.5-5A2 2 0 0 1 6.4 8.5h11.2a2 2 0 0 1 1.9 1.5L21 15v3h-2.5M3 15v3h2.5M3 15h18M8.5 18h7"/><circle cx="7" cy="18" r="1.8"/><circle cx="17" cy="18" r="1.8"/></svg></div><h3>RENT A CAR</h3><p>İhtiyacınıza uygun, bakımlı ve temiz araç seçenekleri.</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- Filo -->
+<section id="filo">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">ARAÇ FİLOSU</div>
+      <h2>Size uygun <span class="script">aracı seçin</span></h2>
+      <p>Uzun kiralamalarda otomatik indirim. Fiyatlar günlük ve “başlayan” fiyatlardır.</p>
+    </div>
+    <div class="tabs rv" id="tabs">
+      <button class="on" data-f="all">Tümü</button>
+      <button data-f="ekonomi">Ekonomi</button>
+      <button data-f="kompakt">Kompakt</button>
+      <button data-f="konfor">Konfor</button>
+      <button data-f="suv">SUV</button>
+      <button data-f="vip">VIP</button>
+    </div>
+    <div class="fleet" id="fleet"></div>
+    <p class="note">* Fiyatlar bilgilendirme amaçlıdır; sezon ve tarihe göre değişebilir. Kesin fiyat için WhatsApp’tan yazın.</p>
+  </div>
+</section>
+
+<!-- Transfer -->
+<section id="transfer">
+  <div class="wrap split">
+    <div class="rv">
+      <div class="sec-head">
+        <div class="eyebrow">HAVALİMANI TRANSFERİ</div>
+        <h2>İner inmez <span class="script">yoldasınız</span></h2>
+        <p>Üsküp Uluslararası Havalimanı’ndan Makedonya’nın her noktasına sabit fiyatlı, özel şoförlü transfer.</p>
+      </div>
+      <ul class="checks">
+        <li>Uçuş takibi — rötar olsa da sizi bekleriz</li>
+        <li>Terminalde isimli tabelayla karşılama</li>
+        <li>Bagaj yardımı, su ve Wi-Fi</li>
+        <li>Bebek / çocuk koltuğu talep üzerine</li>
+      </ul>
+      <button class="btn btn-wa" data-wa="Merhaba, havalimanı transferi için fiyat almak istiyorum. Uçuş tarihim: ">
+        <svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Transfer Fiyatı Al</button>
+    </div>
+    <div class="ttable rv">
+      <div class="th"><b>Üsküp Havalimanı →</b><span>Araç başı</span></div>
+      <div id="trows"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Turlar -->
+<section id="turlar">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">ÖZEL TURLAR</div>
+      <h2>Makedonya’yı <span class="script">keşfedin</span></h2>
+      <p>Şoförlü, size özel ve esnek programlı günlük turlar.</p>
+    </div>
+    <div class="tours" id="tours"></div>
+  </div>
+</section>
+
+<!-- Rezervasyon -->
+<section id="rezervasyon">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <div class="eyebrow">HIZLI REZERVASYON</div>
+      <h2>Fiyatınızı görün, <span class="script">WhatsApp’tan</span> onaylayın</h2>
+      <p>Formu doldurun, talebiniz hazır mesaj olarak WhatsApp’a gelsin. Tek tıkla gönderin.</p>
+    </div>
+    <div class="book rv">
+      <form id="bookForm" autocomplete="off">
+        <div class="seg" id="seg">
+          <button type="button" class="on" data-m="rent">Araç Kiralama</button>
+          <button type="button" data-m="transfer">Transfer</button>
+          <button type="button" data-m="tour">Tur</button>
+        </div>
+        <div class="field full" id="fCar"><label for="car">Araç</label><select id="car"></select></div>
+        <div class="field full" id="fRoute" hidden><label for="route">Güzergâh</label><select id="route"></select></div>
+        <div class="field full" id="fTour" hidden><label for="tour">Tur</label><select id="tour"></select></div>
+        <div class="field" id="fLoc"><label for="loc">Teslim yeri</label>
+          <select id="loc"><option>Üsküp Havalimanı</option><option>Üsküp Merkez</option><option>Tetova</option><option>Ohri</option><option>Bitola</option><option>Otel teslimi</option></select></div>
+        <div class="field" id="fPax" hidden><label for="pax">Kişi sayısı</label><input id="pax" type="number" min="1" max="8" value="2"></div>
+        <div class="field"><label for="d1" id="d1l">Alış tarihi</label><input id="d1" type="date"></div>
+        <div class="field" id="fD2"><label for="d2">İade tarihi</label><input id="d2" type="date"></div>
+        <div class="field full"><label for="nm">Adınız</label><input id="nm" type="text" placeholder="Ad Soyad"></div>
+        <div class="field full"><label for="msg">Not (isteğe bağlı)</label><textarea id="msg" rows="2" placeholder="Uçuş numarası, çocuk koltuğu vb."></textarea></div>
+      </form>
+      <aside class="summary">
+        <span class="script">Özet</span>
+        <h3 id="sTitle">Araç Kiralama</h3>
+        <div class="sum-rows" id="sRows"></div>
+        <div class="total">
+          <small>Tahmini Tutar</small>
+          <b id="sTotal">€0</b>
+          <p>Kesin fiyat WhatsApp’ta onaylanır.</p>
+          <button class="btn btn-wa" id="sendBook" type="button"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>WhatsApp ile Gönder</button>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<!-- Nasıl çalışır -->
+<section style="padding-top:0;background:var(--cream-2)">
+  <div class="wrap">
+    <div class="sec-head rv" style="padding-top:20px">
+      <div class="eyebrow">3 ADIMDA</div>
+      <h2>Kiralamak <span class="script">bu kadar kolay</span></h2>
+    </div>
+    <div class="steps">
+      <div class="step rv"><h3>Aracınızı seçin</h3><p>Filodan size uygun aracı veya transfer güzergâhını seçin.</p></div>
+      <div class="step rv"><h3>WhatsApp’tan yazın</h3><p>Hazır mesajla talebinizi gönderin, müsaitlik ve fiyatı hemen onaylayalım.</p></div>
+      <div class="step rv"><h3>Anahtarı alın</h3><p>Havalimanında, otelinizde ya da ofiste aracınız sizi bekliyor.</p></div>
+    </div>
+  </div>
+</section>
+
+<footer id="iletisim">
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="brand"><b>M<em>&amp;</em>M</b><small>Tour Transfer<br>&amp; Rent a Car</small></div>
+        <p class="script">Siz keşfedin, biz gerisini düşünelim.</p>
+      </div>
+      <div class="contact">
+        <h4>İletişim</h4>
+        <ul>
+          <li><a href="tel:+905304974850"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>+90 530 497 4850</a></li>
+          <li><a href="#" data-wa="Merhaba, bilgi almak istiyorum."><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>+389 78 510 873</a></li>
+          <li><a href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg>Üsküp, Kuzey Makedonya</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Hizmetler</h4>
+        <ul><li><a href="#filo">Araç Kiralama</a></li><li><a href="#transfer">Havalimanı Transferi</a></li><li><a href="#turlar">Özel Turlar</a></li><li><a href="#rezervasyon">Rezervasyon</a></li></ul>
+      </div>
+    </div>
+    <div class="copy"><span>© <span id="yr"></span> M&amp;M Tour Transfer &amp; Rent a Car</span><span>Üsküp • Tetova • Bitola • Ohri</span></div>
+  </div>
+</footer>
+
+<!-- WhatsApp baloncuğu -->
+<div class="wa-teaser" id="waTeaser">Merhaba 👋 Size nasıl yardımcı olabiliriz?</div>
+<div class="wa-panel" id="waPanel" role="dialog" aria-label="WhatsApp destek">
+  <div class="wa-head">
+    <div class="wa-av">M&amp;M</div>
+    <div><b>M&amp;M Rent a Car</b><small>WhatsApp üzerinden yazın</small></div>
+  </div>
+  <div class="wa-body" id="waBody">
+    <div class="bub">Merhaba! 👋 M&amp;M Tour Transfer &amp; Rent a Car’a hoş geldiniz.<time id="t1"></time></div>
+    <div class="bub" style="animation-delay:.25s">Aşağıdaki sorulardan birini seçin, mesajınız WhatsApp’ta hazır gelsin 👇<time id="t2"></time></div>
+    <div class="q-lbl">Sık sorulanlar</div>
+    <div class="qs" id="qs"></div>
+  </div>
+  <form class="wa-foot" id="waForm">
+    <input id="waInput" placeholder="Mesajınızı yazın…" aria-label="Mesaj">
+    <button aria-label="Gönder"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M3 20.5l18-8.5L3 3.5 3 10l12 2-12 2z"/></svg></button>
+  </form>
+</div>
+<button class="wa-fab" id="waFab" aria-label="WhatsApp ile yazın">
+  <svg class="logo" viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>
+  <svg class="x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  <span class="wa-dot">1</span>
+</button>
+
+<svg width="0" height="0" style="position:absolute">
+  <symbol id="i-wa" viewBox="0 0 24 24"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38a9.9 9.9 0 0 0 4.74 1.21h.01c5.46 0 9.91-4.45 9.91-9.91A9.85 9.85 0 0 0 12.04 2zm0 18.15h-.01a8.2 8.2 0 0 1-4.19-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.22 8.22 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.25-8.24a8.24 8.24 0 0 1 8.24 8.25c0 4.54-3.7 8.23-8.24 8.23zm4.52-6.16c-.25-.12-1.47-.72-1.69-.81-.23-.08-.39-.12-.56.13-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06a6.7 6.7 0 0 1-1.99-1.23 7.5 7.5 0 0 1-1.38-1.72c-.14-.25-.02-.38.11-.51.11-.11.25-.29.37-.43.13-.15.17-.25.25-.42.08-.17.04-.31-.02-.43-.06-.13-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48a.92.92 0 0 0-.67.31c-.23.25-.87.85-.87 2.08s.89 2.41 1.02 2.58c.12.17 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.6.19 1.14.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.15-1.18-.06-.1-.23-.16-.48-.29z"/></symbol>
+</svg>
+
+<script>
+/* =========================================================
+   AYARLAR — numaraları ve fiyatları buradan değiştirin
+   ========================================================= */
+const CONFIG = {
+  whatsapp: '38978510873',          // afişteki WhatsApp: +389 78 510 873
+  phone: '+905304974850',
+  greeting: 'Merhaba M&M, '
+};
+const CARS = [
+  { name:'Renault Clio',     cls:'ekonomi', label:'Ekonomi', type:'hatch', color:'#b9b3a9', gear:'Manuel',   fuel:'Benzin', seats:5, bags:2, price:28 },
+  { name:'Volkswagen Golf',  cls:'kompakt', label:'Kompakt', type:'hatch', color:'#5f646b', gear:'Manuel',   fuel:'Dizel',  seats:5, bags:3, price:35, tag:'Popüler' },
+  { name:'Seat Leon',        cls:'kompakt', label:'Kompakt', type:'hatch', color:'#2b2e33', gear:'Otomatik', fuel:'Dizel',  seats:5, bags:3, price:38 },
+  { name:'Škoda Octavia',    cls:'konfor',  label:'Konfor',  type:'sedan', color:'#3a3e44', gear:'Otomatik', fuel:'Dizel',  seats:5, bags:4, price:42 },
+  { name:'Škoda Kodiaq',     cls:'suv',     label:'SUV',     type:'suv',   color:'#d6d2ca', gear:'Otomatik', fuel:'Dizel',  seats:7, bags:5, price:60, tag:'Aile' },
+  { name:'Mercedes Vito VIP',cls:'vip',     label:'VIP · Şoförlü', type:'van', color:'#17171a', gear:'Otomatik', fuel:'Dizel', seats:8, bags:8, price:95 }
+];
+const TRANSFERS = [
+  ['Üsküp Merkez','20 dk',20], ['Tetova','40 dk',40], ['Gostivar','55 dk',50],
+  ['Kırçova','1 sa 30 dk',70], ['Bitola','2 sa 30 dk',100], ['Ohri','2 sa 45 dk',110], ['Struga','2 sa 50 dk',115]
+];
+const TOURS = [
+  { city:'Üsküp',  text:'Kale, Taş Köprü, Eski Çarşı ve Matka Kanyonu.', price:40,  bg:'linear-gradient(160deg,#6b4a2e,#2a1c12)' },
+  { city:'Tetova', text:'Alaca Cami, Arabati Baba Tekkesi ve Popova Şapka.', price:55, bg:'linear-gradient(160deg,#3f5a4a,#16211b)' },
+  { city:'Bitola', text:'Şirok Sokak, Heraclea Lyncestis antik kenti.', price:90,  bg:'linear-gradient(160deg,#7a5a3a,#2b1d12)' },
+  { city:'Ohri',   text:'Ohri Gölü, Samuil Kalesi ve Sveti Jovan Kaneo.', price:110, bg:'linear-gradient(160deg,#2f5d7a,#101d27)' }
+];
+const discount = d => d >= 8 ? .20 : d >= 4 ? .10 : 0;
+
+/* ---------- yardımcılar ---------- */
+const $ = s => document.querySelector(s);
+const waOpen = text => window.open('https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(text), '_blank', 'noopener');
+document.addEventListener('click', e => {
+  const el = e.target.closest('[data-wa]');
+  if (el) { e.preventDefault(); waOpen(el.dataset.wa); }
+});
+$('#yr').textContent = new Date().getFullYear();
+
+/* ---------- açılış ---------- */
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+if (!location.hash) scrollTo(0, 0);
+let ready = false;
+window.mmProgress = p => {
+  const v = Math.max(4, Math.min(100, Math.round(p * 100)));
+  $('#ldBar').style.width = v + '%';
+  $('#ldPct').textContent = v < 100 ? v + '%' : 'HAZIR';
+};
+window.mmReady = ok => {
+  if (ready) return; ready = true;
+  if (!ok) $('#hero').classList.add('no3d');
+  window.mmProgress(1);
+  setTimeout(() => {
+    $('#loader').classList.add('out');
+    document.body.classList.remove('locked');
+    document.body.classList.add('ready');
+    window.dispatchEvent(new Event('mm:start'));
+  }, 350);
+};
+setTimeout(() => window.mmReady(false), 15000); // CDN yavaşsa siteyi bekletme
+
+/* ---------- menü ---------- */
+const nav = $('#nav');
+const onScroll = () => nav.classList.toggle('solid', scrollY > innerHeight * .75);
+addEventListener('scroll', onScroll, { passive:true }); onScroll();
+$('#burger').onclick = () => { $('#mnav').classList.toggle('open'); };
+$('#mnav').onclick = e => { if (e.target.tagName === 'A') $('#mnav').classList.remove('open'); };
+
+/* ---------- renk seçici ---------- */
+$('#swatches').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#swatches button').forEach(x => x.classList.toggle('on', x === b));
+  window.mmSetColor && window.mmSetColor(b.dataset.c);
+});
+
+/* ---------- araç çizimleri ---------- */
+const SHAPES = {
+  hatch: { body:'M18 84 Q16 66 36 61 L86 54 Q112 30 150 28 L202 28 Q222 30 236 52 L266 62 Q284 67 284 84 Z', win:'M100 54 Q120 37 150 36 L170 36 L170 54 Z M180 36 L200 36 Q214 38 226 54 L180 54 Z' },
+  sedan: { body:'M14 84 Q12 68 32 63 L84 56 Q110 32 148 30 L188 30 Q214 32 236 54 L270 60 Q288 64 288 84 Z', win:'M98 55 Q118 39 148 38 L166 38 L166 55 Z M176 38 L188 38 Q208 40 224 55 L176 55 Z' },
+  suv:   { body:'M16 84 L18 58 Q20 48 36 46 L78 42 Q100 22 140 20 L230 20 Q248 20 254 38 L274 50 Q286 56 286 84 Z', win:'M92 44 Q110 28 140 28 L168 28 L168 44 Z M178 28 L228 28 Q240 28 244 44 L178 44 Z' },
+  van:   { body:'M14 86 L16 46 Q18 22 46 18 L252 18 Q272 18 278 34 L286 58 Q290 72 288 86 Z', win:'M60 26 L120 26 L120 46 L56 46 Q56 32 60 26 Z M130 26 L190 26 L190 46 L130 46 Z M200 26 L250 26 Q264 26 270 46 L200 46 Z' }
+};
+function carSVG(c) {
+  const s = SHAPES[c.type];
+  const wheel = x => `<circle cx="${x}" cy="86" r="19" fill="#1b1714"/><circle cx="${x}" cy="86" r="10" fill="#c9c3ba"/><circle cx="${x}" cy="86" r="3.5" fill="#1b1714"/>`;
+  return `<svg viewBox="0 0 300 120" aria-hidden="true">
+    <ellipse cx="150" cy="106" rx="132" ry="7" fill="rgba(59,40,25,.18)"/>
+    <path d="${s.body}" fill="${c.color}"/>
+    <path d="${s.body}" fill="url(#shine)" opacity=".55"/>
+    <path d="${s.win}" fill="#1d2a33" opacity=".85"/>
+    <rect x="262" y="66" width="18" height="5" rx="2.5" fill="#ffd27a"/><rect x="18" y="68" width="12" height="5" rx="2.5" fill="#d10f1b"/>
+    ${wheel(c.type === 'van' ? 70 : 74)}${wheel(c.type === 'van' ? 236 : 232)}
+  </svg>`;
+}
+const I = {
+  gear:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="6" cy="6" r="2"/><circle cx="18" cy="6" r="2"/><circle cx="6" cy="18" r="2"/><path d="M6 8v8M18 8v4H6"/></svg>',
+  fuel:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h12M4 10h10M14 8l4 3v7a1.5 1.5 0 0 0 3 0V9l-3-3"/></svg>',
+  seat:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="7" r="3.5"/><path d="M5 21a7 7 0 0 1 14 0"/></svg>',
+  bag:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="7" width="14" height="13" rx="2"/><path d="M9 7V4h6v3"/></svg>'
+};
+$('#fleet').innerHTML = `<svg width="0" height="0" style="position:absolute"><defs><linearGradient id="shine" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".7"/><stop offset=".45" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>` +
+  CARS.map((c, i) => `
+  <article class="car rv" data-cls="${c.cls}">
+    <div class="car-vis">${c.tag ? `<span class="car-tag alt">${c.tag}</span>` : ''}<span class="car-tag">${c.label}</span>${carSVG(c)}</div>
+    <div class="car-body">
+      <h3>${c.name}</h3><span class="cls">veya benzeri</span>
+      <div class="specs"><span>${I.gear}${c.gear}</span><span>${I.fuel}${c.fuel}</span><span>${I.seat}${c.seats} kişi</span><span>${I.bag}${c.bags} bavul</span></div>
+      <div class="car-foot">
+        <div class="price"><small>Günlük</small><b>€${c.price}<sub>/gün</sub></b><div class="disc">4+ gün %10 · 8+ gün %20 indirim</div></div>
+        <button class="btn btn-wa" data-wa="${CONFIG.greeting}${c.name} aracını kiralamak istiyorum. Müsaitlik ve fiyat bilgisi alabilir miyim?"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg>Sor</button>
+      </div>
+    </div>
+  </article>`).join('');
+
+$('#tabs').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  document.querySelectorAll('#tabs button').forEach(x => x.classList.toggle('on', x === b));
+  document.querySelectorAll('.car').forEach(c => c.classList.toggle('hide', b.dataset.f !== 'all' && c.dataset.cls !== b.dataset.f));
+});
+
+/* ---------- transfer & turlar ---------- */
+$('#trows').innerHTML = TRANSFERS.map(([to, dur, p]) =>
+  `<div class="trow" data-wa="${CONFIG.greeting}Üsküp Havalimanı → ${to} transferi için rezervasyon yapmak istiyorum. Tarih: ">
+     <div class="from">${to} <i>· ${dur}</i></div><div class="pr"><small>başlayan</small>€${p}</div></div>`).join('');
+
+const deco = '<svg class="deco" viewBox="0 0 100 100" fill="none" stroke="#d8b98c" stroke-width="1.2"><path d="M10 90h80M20 90V55l30-25 30 25v35M50 30V10M44 16h12M35 90V70a15 15 0 0 1 30 0v20"/></svg>';
+$('#tours').innerHTML = TOURS.map((t, i) => `
+  <article class="tour rv" style="--bg:${t.bg}">
+    <span class="num">0${i + 1}</span>${deco}
+    <h3>${t.city}</h3><p>${t.text}</p>
+    <div class="tp"><div><small>Araç başı, başlayan</small><b>€${t.price}</b></div>
+      <button data-wa="${CONFIG.greeting}${t.city} turu hakkında bilgi almak istiyorum. Kaç kişiyiz: " aria-label="${t.city} turunu sor"><svg viewBox="0 0 24 24" fill="currentColor"><use href="#i-wa"/></svg></button></div>
+  </article>`).join('');
+
+/* ---------- rezervasyon ---------- */
+let mode = 'rent';
+$('#car').innerHTML = CARS.map((c, i) => `<option value="${i}">${c.name} — €${c.price}/gün</option>`).join('');
+$('#route').innerHTML = TRANSFERS.map(([to, , p], i) => `<option value="${i}">Üsküp Havalimanı → ${to} — €${p}</option>`).join('');
+$('#tour').innerHTML = TOURS.map((t, i) => `<option value="${i}">${t.city} turu — €${t.price}</option>`).join('');
+const iso = d => d.toISOString().slice(0, 10);
+const today = new Date(); const t1 = new Date(today.getTime() + 864e5 * 3); const t2 = new Date(today.getTime() + 864e5 * 6);
+$('#d1').value = iso(t1); $('#d2').value = iso(t2); $('#d1').min = $('#d2').min = iso(today);
+const fmtDate = v => v ? new Date(v + 'T12:00').toLocaleDateString('tr-TR', { day:'numeric', month:'long', year:'numeric' }) : '—';
+
+function calc() {
+  const rows = []; let total = 0; let title = '';
+  if (mode === 'rent') {
+    const c = CARS[$('#car').value];
+    const days = Math.max(1, Math.round((new Date($('#d2').value) - new Date($('#d1').value)) / 864e5) || 1);
+    const disc = discount(days);
+    total = Math.round(c.price * days * (1 - disc));
+    title = c.name;
+    rows.push(['Teslim', $('#loc').value], ['Alış', fmtDate($('#d1').value)], ['İade', fmtDate($('#d2').value)],
+              ['Süre', days + ' gün × €' + c.price]);
+    if (disc) rows.push(['İndirim', '%' + disc * 100]);
+  } else if (mode === 'transfer') {
+    const [to, dur, p] = TRANSFERS[$('#route').value];
+    total = p; title = 'Havalimanı → ' + to;
+    rows.push(['Tarih', fmtDate($('#d1').value)], ['Süre', dur], ['Kişi', $('#pax').value]);
+  } else {
+    const t = TOURS[$('#tour').value];
+    total = t.price; title = t.city + ' Turu';
+    rows.push(['Tarih', fmtDate($('#d1').value)], ['Kişi', $('#pax').value], ['Alınış', $('#loc').value]);
+  }
+  $('#sTitle').textContent = title;
+  $('#sRows').innerHTML = rows.map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join('');
+  $('#sTotal').textContent = '€' + total;
+  return { rows, total, title };
+}
+$('#seg').addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  mode = b.dataset.m;
+  document.querySelectorAll('#seg button').forEach(x => x.classList.toggle('on', x === b));
+  $('#fCar').hidden = mode !== 'rent'; $('#fD2').hidden = mode !== 'rent';
+  $('#fRoute').hidden = mode !== 'transfer'; $('#fTour').hidden = mode !== 'tour';
+  $('#fPax').hidden = mode === 'rent'; $('#fLoc').hidden = mode === 'transfer';
+  $('#d1l').textContent = mode === 'rent' ? 'Alış tarihi' : 'Tarih';
+  calc();
+});
+$('#bookForm').addEventListener('input', calc);
+$('#bookForm').addEventListener('change', calc);
+$('#sendBook').onclick = () => {
+  const { rows, total, title } = calc();
+  const kind = { rent:'Araç kiralama', transfer:'Havalimanı transferi', tour:'Özel tur' }[mode];
+  let txt = `${CONFIG.greeting}${kind} talebim var:\n\n🚗 ${title}\n` + rows.map(([k, v]) => `• ${k}: ${v}`).join('\n') + `\n💶 Tahmini tutar: €${total}`;
+  if ($('#nm').value.trim()) txt += `\n👤 Ad: ${$('#nm').value.trim()}`;
+  if ($('#msg').value.trim()) txt += `\n📝 Not: ${$('#msg').value.trim()}`;
+  waOpen(txt);
+};
+calc();
+
+/* ---------- WhatsApp baloncuğu ---------- */
+const QUESTIONS = [
+  ['💶', 'Araç kiralama fiyatları', 'Araç kiralama fiyatlarınız hakkında bilgi almak istiyorum.'],
+  ['🚗', 'Müsait araçlar', 'Belirttiğim tarihlerde müsait araçlarınızı öğrenebilir miyim? Tarihler: '],
+  ['✈️', 'Havalimanı transferi', 'Üsküp Havalimanı transferi için fiyat almak istiyorum.'],
+  ['🏞️', 'Ohri / şehir turları', 'Ohri ve diğer şehir turlarınız hakkında bilgi almak istiyorum.'],
+  ['📄', 'Gerekli belgeler', 'Araç kiralamak için hangi belgeler gerekiyor? (ehliyet, pasaport, depozito)'],
+  ['📅', 'Rezervasyon yapmak istiyorum', 'Rezervasyon yapmak istiyorum.']
+];
+const now = new Date().toLocaleTimeString('tr-TR', { hour:'2-digit', minute:'2-digit' });
+$('#t1').textContent = $('#t2').textContent = now;
+$('#qs').innerHTML = QUESTIONS.map(([e, l, m], i) =>
+  `<button style="animation-delay:${.4 + i * .07}s" data-wa="${CONFIG.greeting}${m}"><span>${e}</span>${l}</button>`).join('');
+
+const fab = $('#waFab'), panel = $('#waPanel'), teaser = $('#waTeaser');
+const togglePanel = open => {
+  const o = open ?? !panel.classList.contains('open');
+  panel.classList.toggle('open', o); fab.classList.toggle('open', o);
+  fab.classList.add('seen'); teaser.classList.remove('show');
+  if (o) setTimeout(() => $('#waInput').focus({ preventScroll:true }), 300);
+};
+fab.onclick = () => togglePanel();
+teaser.onclick = () => togglePanel(true);
+$('#waForm').onsubmit = e => {
+  e.preventDefault();
+  const v = $('#waInput').value.trim(); if (!v) return;
+  waOpen(v); $('#waInput').value = '';
+};
+document.addEventListener('keydown', e => { if (e.key === 'Escape') togglePanel(false); });
+addEventListener('mm:start', () => setTimeout(() => { if (!fab.classList.contains('seen')) teaser.classList.add('show'); }, 4000));
+
+/* ---------- kaydırınca beliren öğeler ---------- */
+const io = new IntersectionObserver(es => es.forEach(en => {
+  if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+}), { threshold:.12 });
+document.querySelectorAll('.rv').forEach((el, i) => { el.style.transitionDelay = (i % 4) * .08 + 's'; io.observe(el); });
+</script>
+
+<!-- 3D sahne -->
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+
+const MODEL_BASE = 'https://cdn.jsdelivr.net/gh/mrdoob/three.js@r160/examples/models/gltf/';
+const hero = document.getElementById('hero');
+const canvas = document.getElementById('scene');
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ canvas, antialias:true, powerPreference:'high-performance' });
+} catch (e) { window.mmReady(false); throw e; }
+renderer.setPixelRatio(Math.min(devicePixelRatio, 1.75));
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.95;
+
+const scene = new THREE.Scene();
+const BG = 0x0e0b09;
+scene.background = new THREE.Color(BG);
+scene.fog = new THREE.Fog(BG, 9, 24);
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(renderer), 0.04).texture;
+
+const camera = new THREE.PerspectiveCamera(36, 1, 0.1, 100);
+
+// zemin + ızgara
+const floor = new THREE.Mesh(new THREE.PlaneGeometry(80, 80), new THREE.MeshStandardMaterial({ color:0x0c0907, roughness:0.55, metalness:0.3 }));
+floor.rotation.x = -Math.PI / 2; floor.position.y = -0.002;
+scene.add(floor);
+const grid = new THREE.GridHelper(60, 120, 0xb48a58, 0x5b4330);
+grid.material.transparent = true; grid.material.opacity = 0.16; grid.material.depthWrite = false;
+scene.add(grid);
+
+// hız çizgileri
+const streakMat = new THREE.MeshBasicMaterial({ color:0xd8b98c, transparent:true, opacity:0.5, blending:THREE.AdditiveBlending, depthWrite:false, fog:true });
+const streaks = [];
+for (let i = 0; i < 46; i++) {
+  const len = 1 + Math.random() * 3.5;
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(0.025 + Math.random() * 0.03, len), streakMat.clone());
+  m.rotation.x = -Math.PI / 2;
+  let x; do { x = (Math.random() - .5) * 18; } while (Math.abs(x) < 1.3);
+  m.position.set(x, 0.004, (Math.random() - .5) * 36);
+  m.material.opacity = 0.15 + Math.random() * 0.5;
+  m.userData.speed = 0.6 + Math.random() * 0.9;
+  scene.add(m); streaks.push(m);
+}
+
+// ışıklar (ortam yansıması zaten var, biraz sıcak vurgu)
+const warm = new THREE.DirectionalLight(0xffd9a8, 1.2); warm.position.set(-4, 6, 3); scene.add(warm);
+
+// arabalar
+const cars = [];
+let mainBody = null;
+const targetColor = new THREE.Color(0xd10f1b);
+window.mmSetColor = hex => targetColor.set(hex);
+
+const draco = new DRACOLoader();
+draco.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/libs/draco/gltf/');
+const loader = new GLTFLoader();
+loader.setDRACOLoader(draco);
+const aoTex = new THREE.TextureLoader().load(MODEL_BASE + 'ferrari_ao.png');
+const shadowMat = new THREE.MeshBasicMaterial({ map:aoTex, blending:THREE.MultiplyBlending, toneMapped:false, transparent:true, premultipliedAlpha:true });
+const detailsMat = new THREE.MeshStandardMaterial({ color:0xffffff, metalness:1.0, roughness:0.45 });
+const glassMat = new THREE.MeshPhysicalMaterial({ color:0xffffff, metalness:0.25, roughness:0, transmission:1.0 });
+
+function makeCar(src, color, x, z) {
+  const car = src.clone(true);
+  car.rotation.y = Math.PI; // burun +z yönüne (yol akışıyla aynı)
+  const body = new THREE.MeshPhysicalMaterial({ color, metalness:1.0, roughness:0.42, clearcoat:1.0, clearcoatRoughness:0.03 });
+  const b = car.getObjectByName('body'); if (b) b.material = body;
+  ['rim_fl','rim_fr','rim_rr','rim_rl','trim'].forEach(n => { const o = car.getObjectByName(n); if (o) o.material = detailsMat; });
+  const g = car.getObjectByName('glass'); if (g) g.material = glassMat;
+  const wheels = ['wheel_fl','wheel_fr','wheel_rl','wheel_rr'].map(n => car.getObjectByName(n)).filter(Boolean);
+  const sh = new THREE.Mesh(new THREE.PlaneGeometry(0.655 * 4, 1.3 * 4), shadowMat);
+  sh.rotation.x = -Math.PI / 2; sh.renderOrder = 2; car.add(sh);
+  car.position.set(x, 0, z);
+  scene.add(car);
+  const c = { obj:car, body, wheels, x, z, phase:Math.random() * 6.28 };
+  cars.push(c);
+  return c;
+}
+
+loader.load(MODEL_BASE + 'ferrari.glb', gltf => {
+  const src = gltf.scene.children[0];
+  const main = makeCar(src, 0xd10f1b, 0, 0);
+  mainBody = main.body; main.main = true;
+  makeCar(src, 0x0d0d0f, -2.9, -4.2);
+  makeCar(src, 0xe9e4da, 2.9, -3.0);
+  // ilk kareyi derle, sonra perdeyi aç
+  resize(); renderer.compile(scene, camera);
+  window.mmReady(true);
+}, xhr => { if (xhr.total) window.mmProgress(xhr.loaded / xhr.total * 0.95); },
+() => window.mmReady(false));
+
+// kamera hareketi
+const target = new THREE.Vector3();
+const pointer = { x:0, y:0, tx:0, ty:0 };
+addEventListener('pointermove', e => { pointer.tx = e.clientX / innerWidth - .5; pointer.ty = e.clientY / innerHeight - .5; }, { passive:true });
+
+let startT = -1, wide = true, aspectK = 1;
+addEventListener('mm:start', () => { startT = performance.now(); });
+
+function resize() {
+  const w = hero.clientWidth, h = hero.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w / h;
+  wide = w / h > 1.05;
+  aspectK = Math.min(1.45, Math.max(1, 1.75 / (w / h))); // dar ekranda kamera biraz geri
+  if (wide) camera.setViewOffset(w, h, -w * 0.24, h * 0.03, w, h);
+  else camera.setViewOffset(w, h, 0, -h * 0.2, w, h); // dikey ekranda araba alt kısımda
+  camera.updateProjectionMatrix();
+}
+addEventListener('resize', resize); resize();
+
+let visible = true;
+new IntersectionObserver(([e]) => { visible = e.isIntersecting; }).observe(hero);
+
+const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+const lerp = (a, b, t) => a + (b - a) * t;
+const clock = new THREE.Clock();
+let dist = 0, time = 0;
+const SPEED = reduce ? 1.2 : 5.5;
+
+renderer.setAnimationLoop(() => {
+  const dt = Math.min(clock.getDelta(), 0.05);
+  if (!visible || document.hidden) return;
+  time += dt;
+  const intro = startT < 0 ? 0 : reduce ? 1 : Math.min(1, (performance.now() - startT) / 4200);
+  const k = ease(intro);
+
+  // yol akıyor
+  dist += SPEED * dt;
+  grid.position.z = -(dist % 0.5);
+  for (const s of streaks) {
+    s.position.z -= SPEED * s.userData.speed * dt * 1.6;
+    if (s.position.z < -18) s.position.z += 36;
+  }
+
+  // arabalar
+  for (const c of cars) {
+    const enter = c.main ? 0 : (1 - ease(Math.min(1, intro * 1.25))) * -14;
+    const drift = c.main ? Math.sin(time * 0.5) * 0.25 : Math.sin(time * 0.42 + c.phase) * 1.1;
+    c.obj.position.z = c.z + drift + enter;
+    c.obj.position.x = c.x + Math.sin(time * 0.3 + c.phase) * (c.main ? 0.05 : 0.15);
+    c.obj.position.y = Math.sin(time * 14 + c.phase) * 0.004;
+    for (const w of c.wheels) w.rotation.x = -dist / 0.33;
+  }
+  if (mainBody) mainBody.color.lerp(targetColor, 0.06);
+
+  // kamera
+  pointer.x += (pointer.tx - pointer.x) * 0.04;
+  pointer.y += (pointer.ty - pointer.y) * 0.04;
+  const sc = Math.min(1, scrollY / innerHeight);
+  const r = lerp(3.2, wide ? 7.4 * aspectK : 12.5, k) + sc * 2;
+  const th = lerp(-1.35, 0.78, k) + pointer.x * 0.35 + Math.sin(time * 0.15) * 0.1;
+  const h = lerp(0.32, 1.55, k) + pointer.y * -0.4 + sc * 2.5;
+  target.set(0, 0.45, -0.9);
+  camera.position.set(target.x + r * Math.sin(th), h, target.z + r * Math.cos(th));
+  camera.lookAt(target);
+
+  renderer.render(scene, camera);
+});
+</script>
+</body>
+</html>
