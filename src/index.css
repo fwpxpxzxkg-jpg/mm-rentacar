@@ -1,0 +1,68 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html { scroll-behavior: smooth; }
+  body { font-family: Inter, system-ui, sans-serif; overflow-x: hidden; }
+  ::selection { background: #e10600; color: #fff; }
+  :focus-visible { outline: 2px solid #d4af37; outline-offset: 3px; border-radius: 6px; }
+}
+
+@layer components {
+  /* Neon kırmızı buton */
+  .btn-neon {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-racing px-6 py-3 text-sm font-bold uppercase tracking-wider text-white transition-all duration-300;
+    box-shadow: 0 0 0 1px rgba(255,255,255,.08) inset, 0 10px 30px -8px rgba(225,6,0,.7), 0 0 24px -4px rgba(225,6,0,.6);
+  }
+  .btn-neon:hover { transform: translateY(-2px); box-shadow: 0 0 0 1px rgba(255,255,255,.15) inset, 0 16px 40px -8px rgba(225,6,0,.9), 0 0 40px 0 rgba(225,6,0,.7); }
+
+  /* Cam (glassmorphism) çerçeveli buton */
+  .btn-glass {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3 text-sm font-bold uppercase tracking-wider text-white backdrop-blur-md transition-all duration-300 hover:border-gold/60 hover:bg-white/10;
+  }
+
+  /* Cam kart */
+  .glass {
+    @apply rounded-3xl border border-white/10 bg-white/[0.04] backdrop-blur-xl;
+    box-shadow: 0 30px 60px -30px rgba(0,0,0,.8), inset 0 1px 0 rgba(255,255,255,.06);
+  }
+
+  /* Bölüm üst etiketi */
+  .eyebrow { @apply inline-flex items-center gap-3 text-[11px] font-bold uppercase tracking-[0.35em] text-gold; }
+  .eyebrow::before { content: ""; @apply h-px w-8 bg-gold; }
+
+  .section-title { @apply font-display text-3xl font-black uppercase leading-tight sm:text-5xl; }
+
+  .field { @apply w-full rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3.5 text-[15px] text-white placeholder-white/30 outline-none transition focus:border-racing focus:bg-white/[0.07] focus:ring-4 focus:ring-racing/20; }
+  .field-label { @apply mb-2 block text-[11px] font-bold uppercase tracking-[0.2em] text-white/50; }
+}
+
+/* Metalik, parlayan başlık */
+.metal-text {
+  background: linear-gradient(100deg, #8a8a8a 0%, #ffffff 18%, #9c9c9c 32%, #f4f4f4 46%, #6e6e6e 60%, #ffffff 76%, #a8a8a8 100%);
+  background-size: 250% 100%;
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  animation: shine 7s linear infinite;
+  filter: drop-shadow(0 6px 30px rgba(225,6,0,.25));
+}
+@keyframes shine { to { background-position: -250% 0; } }
+
+/* WhatsApp pulse halkası */
+.wa-pulse::before, .wa-pulse::after {
+  content: ""; position: absolute; inset: 0; border-radius: 9999px; background: #25D366; z-index: -1;
+  animation: wapulse 2.2s cubic-bezier(.2,.6,.3,1) infinite;
+}
+.wa-pulse::after { animation-delay: 1.1s; }
+@keyframes wapulse { 0% { transform: scale(1); opacity: .55; } 100% { transform: scale(1.9); opacity: 0; } }
+
+/* Hafif film greni */
+.grain::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+}
