@@ -2,12 +2,15 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { Environment, Lightformer, MeshReflectorMaterial, Sparkles, useGLTF, useProgress, useTexture } from '@react-three/drei'
-import { Bloom, EffectComposer, Vignette } from '@react-three/postprocessing'
+import { Bloom, EffectComposer, ToneMapping, Vignette } from '@react-three/postprocessing'
+import { ToneMappingMode } from 'postprocessing'
 
 // Model dosyaları public/models içinde (three.js örnek Ferrari 458 modeli, Draco sıkıştırmalı)
 const BASE = import.meta.env.BASE_URL
 const MODEL_URL = BASE + 'models/ferrari.glb'
 const AO_URL = BASE + 'models/ferrari_ao.png'
+// Gerçek fotoğraf stüdyosu ışığı (Poly Haven "Studio Small 09", CC0) → boyada gerçekçi yansımalar
+const HDR_URL = BASE + 'hdr/studio.hdr'
 const DRACO_URL = 'https://www.gstatic.com/draco/versioned/decoders/1.5.5/'
 
 const RED = '#e10600'
@@ -21,30 +24,39 @@ function Ferrari({ progress, isMobile }) {
   const { scene } = useGLTF(MODEL_URL, DRACO_URL)
   const ao = useTexture(AO_URL)
   const group = useRef()
-  const head = useRef([])
-  const tail = useRef([])
   const born = useRef(null)
 
-  // Malzemeleri bir kez ata, lamba konumlarını aracın ölçüsünden hesapla
-  const { model, lamps } = useMemo(() => {
-    const model = scene.children[0]
-    const body = new THREE.MeshPhysicalMaterial({ color: RED, metalness: 0.65, roughness: 0.26, clearcoat: 1, clearcoatRoughness: 0.02 })
-    const details = new THREE.MeshStandardMaterial({ color: '#f2f2f2', metalness: 1, roughness: 0.3 })
-    const glass = new THREE.MeshPhysicalMaterial({ color: '#070707', metalness: 0.9, roughness: 0.04, transparent: true, opacity: 0.6 })
+  // Gerçekçi malzemeler: Rosso Corsa çok katmanlı boya, gerçek cam, krom jant, mat lastik.
+  // Farlar/stoplar modelin kendi lamba parçalarında yanar (sahte ışık topu yok).
+  const { model, lamps, z } = useMemo(() => {
+    // Önbellekteki orijinal sahneyi değil kopyasını kullan: bileşen yeniden
+    // yüklense de model kaybolmaz
+    const model = scene.clone(true)
+    const body = new THREE.MeshPhysicalMaterial({
+      color: '#b3090d', metalness: 0.55, roughness: 0.33, // alt kat: Rosso Corsa
+      clearcoat: 1, clearcoatRoughness: 0.01,             // üst kat: cam gibi vernik
+      envMapIntensity: 1
+    })
+    const rims = new THREE.MeshStandardMaterial({ color: '#a9a9ab', metalness: 1, roughness: 0.24 }) // alüminyum jant
+    const rubber = new THREE.MeshStandardMaterial({ color: '#0d0d0d', metalness: 0, roughness: 0.9 })
+    const glass = isMobile
+      ? new THREE.MeshPhysicalMaterial({ color: '#0a0a0a', metalness: 0.3, roughness: 0, transparent: true, opacity: 0.5, envMapIntensity: 1.5 })
+      : new THREE.MeshPhysicalMaterial({ color: '#ffffff', metalness: 0.2, roughness: 0, transmission: 1, ior: 1.5, thickness: 0.02 })
+    const tail = new THREE.MeshPhysicalMaterial({ color: '#4a0000', emissive: '#ff1a0d', emissiveIntensity: 0, roughness: 0.1, clearcoat: 1 })
+    const leds = new THREE.MeshStandardMaterial({ color: '#ffffff', emissive: '#fff3e2', emissiveIntensity: 0 })
+
     const set = (name, mat) => { const o = model.getObjectByName(name); if (o) o.material = mat }
     set('body', body)
-    ;['rim_fl', 'rim_fr', 'rim_rr', 'rim_rl', 'trim'].forEach((n) => set(n, details))
+    ;['rim_fl', 'rim_fr', 'rim_rr', 'rim_rl', 'trim', 'chrome'].forEach((n) => set(n, rims))
     set('glass', glass)
+    set('lights_red', tail)
+    set('leds', leds)
+    model.traverse((o) => { if (o.isMesh && o.name === 'tire') o.material = rubber })
 
+    // Arka lamba ışığının zemine vurduğu nokta için aracın boyu (burun -z yönünde)
     const box = new THREE.Box3().setFromObject(model.getObjectByName('body') || model)
-    const s = box.getSize(new THREE.Vector3())
-    // Modelin burnu -z yönünde
-    const lamps = {
-      head: [-1, 1].map((sx) => [sx * s.x * 0.34, box.min.y + s.y * 0.5, box.min.z + s.z * 0.06]),
-      tail: [-1, 1].map((sx) => [sx * s.x * 0.33, box.min.y + s.y * 0.6, box.max.z - s.z * 0.03])
-    }
-    return { model, lamps }
-  }, [scene])
+    return { model, lamps: { tail, leds }, z: { front: box.min.z, back: box.max.z } }
+  }, [scene, isMobile])
 
   useFrame((state, dt) => {
     const t = state.clock.elapsedTime
@@ -59,14 +71,12 @@ function Ferrari({ progress, isMobile }) {
     g.position.x = damp(g.position.x, isMobile ? 0 : p * 2.7, 5, dt)
     g.position.z = damp(g.position.z, isMobile ? -p * 2.5 : 0, 5, dt)
 
-    // Farlar: girişte iki kez "selektör", sonra nefes alır gibi parlar
+    // Farlar: girişte iki kez "selektör", sonra hafifçe nefes alır
     const ignition = age < 0.7 ? 0 : age < 0.85 ? 1 : age < 1.05 ? 0 : 1
-    const k = ignition * (0.75 + 0.25 * Math.sin(t * 2.4))
-    head.current.forEach((m) => m && m.color.setRGB(6 * k, 6 * k, 5.2 * k))
-    tail.current.forEach((m) => m && m.color.setRGB(9 * k, 0.15 * k, 0.1 * k))
+    const k = ignition * (0.9 + 0.1 * Math.sin(t * 2.4))
+    lamps.leds.emissiveIntensity = 4 * k
+    lamps.tail.emissiveIntensity = 3 * k
   })
-
-  const lampGeo = useMemo(() => new THREE.SphereGeometry(0.07, 16, 12), [])
 
   return (
     <group ref={group}>
@@ -76,19 +86,9 @@ function Ferrari({ progress, isMobile }) {
         <planeGeometry args={[0.655 * 4, 1.3 * 4]} />
         <meshBasicMaterial map={ao} blending={THREE.MultiplyBlending} toneMapped={false} transparent premultipliedAlpha />
       </mesh>
-      {/* Far / stop lambası parıltıları (bloom ile ışık saçar) */}
-      {lamps.head.map((p, i) => (
-        <mesh key={'h' + i} position={p} scale={[1.7, 0.55, 0.5]} geometry={lampGeo}>
-          <meshBasicMaterial ref={(m) => (head.current[i] = m)} toneMapped={false} color="black" />
-        </mesh>
-      ))}
-      {lamps.tail.map((p, i) => (
-        <mesh key={'t' + i} position={p} scale={[1.5, 0.5, 0.4]} geometry={lampGeo}>
-          <meshBasicMaterial ref={(m) => (tail.current[i] = m)} toneMapped={false} color="black" />
-        </mesh>
-      ))}
-      <pointLight position={[0, 0.5, lamps.tail[0][2] + 0.6]} color={RED} intensity={6} distance={4} />
-      <pointLight position={[0, 0.5, lamps.head[0][2] - 0.6]} color="#fff3e0" intensity={5} distance={4} />
+      {/* Stop ve far ışığının zemine düşen yumuşak yansıması */}
+      <pointLight position={[0, 0.45, z.back + 0.5]} color={RED} intensity={3} distance={3.5} />
+      <pointLight position={[0, 0.45, z.front - 0.5]} color="#fff3e0" intensity={2} distance={3} />
     </group>
   )
 }
@@ -172,7 +172,8 @@ export default function HeroScene({ progress, isMobile, onProgress }) {
         frameloop={visible ? 'always' : 'never'}
         dpr={isMobile ? [1, 1.5] : [1, 2]}
         camera={{ position: [0, 5, 16], fov: 35, near: 0.1, far: 80 }}
-        gl={{ antialias: true, powerPreference: 'high-performance', toneMapping: THREE.ACESFilmicToneMapping }}
+        // Neutral ton eşleme: Ferrari kırmızısı turuncuya kaymadan gerçek rengiyle görünür
+        gl={{ antialias: true, powerPreference: 'high-performance', toneMapping: THREE.NeutralToneMapping }}
         aria-label="Dönen kırmızı Ferrari 3D animasyonu"
         role="img"
       >
@@ -181,15 +182,11 @@ export default function HeroScene({ progress, isMobile, onProgress }) {
         <ambientLight intensity={0.15} />
         <spotLight position={[0, 9, 0]} angle={0.5} penumbra={1} intensity={60} color="#ffffff" />
 
-        {/* Stüdyo ışıkları: araç yüzeyinde şık yansıma şeritleri */}
-        <Environment resolution={256} frames={1}>
-          <Lightformer intensity={2.2} rotation-x={Math.PI / 2} position={[0, 6, 0]} scale={[12, 2, 1]} />
-          <Lightformer intensity={1.6} rotation-x={Math.PI / 2} position={[0, 6, -4]} scale={[12, 0.6, 1]} />
-          <Lightformer intensity={1.6} rotation-x={Math.PI / 2} position={[0, 6, 4]} scale={[12, 0.6, 1]} />
-          <Lightformer intensity={3} rotation-y={Math.PI / 2} position={[-8, 1.5, 0]} scale={[20, 0.5, 1]} />
-          <Lightformer intensity={3} rotation-y={-Math.PI / 2} position={[8, 1.5, 0]} scale={[20, 0.5, 1]} />
-          <Lightformer form="ring" color={RED} intensity={8} scale={3} position={[-6, 3, -6]} onUpdate={(s) => s.lookAt(0, 0, 0)} />
-          <Lightformer form="ring" color="#d4af37" intensity={4} scale={2} position={[6, 2, 6]} onUpdate={(s) => s.lookAt(0, 0, 0)} />
+        {/* Gerçek stüdyo HDRI'si + tavan softbox şeritleri: boyada fotoğraftaki gibi yansımalar */}
+        <Environment files={HDR_URL} resolution={512} environmentIntensity={0.75}>
+          <Lightformer intensity={1.4} rotation-x={Math.PI / 2} position={[0, 6, 0]} scale={[10, 1.6, 1]} />
+          <Lightformer intensity={0.9} rotation-x={Math.PI / 2} position={[0, 6, -4]} scale={[10, 0.5, 1]} />
+          <Lightformer intensity={0.9} rotation-x={Math.PI / 2} position={[0, 6, 4]} scale={[10, 0.5, 1]} />
         </Environment>
 
         <Ferrari progress={progress} isMobile={isMobile} />
@@ -202,8 +199,9 @@ export default function HeroScene({ progress, isMobile, onProgress }) {
 
         {!isMobile && (
           <EffectComposer disableNormalPass multisampling={4}>
-            <Bloom luminanceThreshold={1} luminanceSmoothing={0.2} intensity={1.2} mipmapBlur />
+            <Bloom luminanceThreshold={1.1} luminanceSmoothing={0.25} intensity={0.55} mipmapBlur />
             <Vignette offset={0.25} darkness={0.85} />
+            <ToneMapping mode={ToneMappingMode.NEUTRAL} />
           </EffectComposer>
         )}
       </Canvas>
