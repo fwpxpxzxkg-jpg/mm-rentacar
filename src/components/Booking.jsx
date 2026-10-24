@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react'
 import { CalendarDays, Send } from 'lucide-react'
-import { CARS, formatPrice, openWhatsApp } from '../config'
+import { CARS, formatBoth, openWhatsApp } from '../config'
+import { CurrencyToggle, useCurrency } from '../currency'
 import Reveal, { SectionHead } from './Reveal'
 
 const iso = (d) => d.toISOString().slice(0, 10)
@@ -11,6 +12,7 @@ const trDate = (v) => new Date(v + 'T12:00').toLocaleDateString('tr-TR', { day: 
 export default function Booking({ selectedCar, setSelectedCar }) {
   const [form, setForm] = useState({ name: '', phone: '', from: iso(addDays(2)), to: iso(addDays(5)), note: '' })
   const [error, setError] = useState('')
+  const { fmt } = useCurrency()
   const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }))
 
   const car = CARS.find((c) => c.id === selectedCar)
@@ -35,7 +37,7 @@ export default function Booking({ selectedCar, setSelectedCar }) {
       `🚗 Araç: ${car.brand} ${car.model}`,
       `📅 Alış: ${trDate(form.from)}`,
       `📅 İade: ${trDate(form.to)} (${days} gün)`,
-      `💰 Tahmini: ${formatPrice(car.price * days)}`,
+      `💰 Tahmini: ${formatBoth(car.price * days)}`,
       form.note.trim() ? `📝 Not: ${form.note.trim()}` : null
     ].filter((l) => l !== null).join('\n')
     openWhatsApp(msg)
@@ -67,7 +69,7 @@ export default function Booking({ selectedCar, setSelectedCar }) {
                 style={{ backgroundImage: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23d4af37' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E\")" }}>
                 <option value="" className="bg-ink">Araç seçin…</option>
                 {CARS.map((c) => (
-                  <option key={c.id} value={c.id} className="bg-ink">{c.brand} {c.model} — {formatPrice(c.price)}/gün</option>
+                  <option key={c.id} value={c.id} className="bg-ink">{c.brand} {c.model} — {fmt(c.price)}/gün</option>
                 ))}
               </select>
             </div>
@@ -89,8 +91,9 @@ export default function Booking({ selectedCar, setSelectedCar }) {
                 <CalendarDays className="text-gold" aria-hidden="true" />
                 <div>
                   <div className="text-[11px] uppercase tracking-[0.2em] text-white/45">{days} gün · tahmini tutar</div>
-                  <div className="font-display text-3xl font-black" aria-live="polite">{car ? formatPrice(car.price * days) : '—'}</div>
+                  <div className="font-display text-3xl font-black" aria-live="polite">{car ? fmt(car.price * days) : '—'}</div>
                 </div>
+                <CurrencyToggle className="ml-2" />
               </div>
               <button type="submit" className="btn-neon w-full !bg-wa !py-4 sm:w-auto" style={{ boxShadow: '0 10px 30px -8px rgba(37,211,102,.7)' }}>
                 <Send size={18} aria-hidden="true" /> WhatsApp ile Gönder

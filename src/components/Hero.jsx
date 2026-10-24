@@ -1,7 +1,8 @@
 import { Component, lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { motion, useScroll, useTransform } from 'framer-motion'
 import { ChevronDown, Gauge, Zap, Timer } from 'lucide-react'
-import { CARS, formatPrice, openWhatsApp } from '../config'
+import { CARS, openWhatsApp } from '../config'
+import { useCurrency } from '../currency'
 
 // 3D sahne ayrı dosyada ve "lazy" yüklenir: sayfa anında açılır, model arkadan gelir
 const HeroScene = lazy(() => import('./HeroScene'))
@@ -45,6 +46,7 @@ export default function Hero({ isMobile }) {
   const [failed, setFailed] = useState(false)
   const [progress, setProgress] = useState(0)
   const featured = CARS[0]
+  const { fmt } = useCurrency()
 
   // Hero 220vh yüksekliğinde; içerik "sticky". Kaydırma ilerlemesi 0 → 1
   const { scrollYProgress } = useScroll({ target: ref, offset: ['start start', 'end end'] })
@@ -132,7 +134,7 @@ export default function Hero({ isMobile }) {
             <div className="mt-6 flex items-end justify-between gap-4">
               <div>
                 <div className="text-[11px] uppercase tracking-widest text-white/50">Günlük</div>
-                <div className="font-display text-3xl font-black">{formatPrice(featured.price)}</div>
+                <div className="font-display text-3xl font-black">{fmt(featured.price)}</div>
               </div>
               <button
                 className="btn-neon"

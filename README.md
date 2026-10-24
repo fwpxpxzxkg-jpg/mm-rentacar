@@ -24,8 +24,9 @@ Hepsi **`src/config.js`** içinde:
 | `[CALISMA_SAATLERI]` | `SITE.hours` |
 | `[SOSYAL_MEDYA]` | `SITE.instagram`, `SITE.facebook` |
 | `[YORUMLAR]` | `REVIEWS`: **örnek metinlerdir**, yayından önce gerçek yorumlarla değiştirin |
-| Fiyatlar | `CARS[].price`: **geçici / örnek** fiyatlar |
-| Araç fotoğrafı | `CARS[].image`: fotoğrafı `public/cars/` içine koyup yolunu yazın (örn. `cars/ferrari.jpg`) |
+| Fiyatlar | `CARS[].price`: **geçici / örnek** günlük fiyatlar, **Euro** olarak. Dinar karşılığı `RATES.MKD` kuruyla otomatik hesaplanır |
+| `[KUR]` | `RATES.MKD`: 1 € = kaç denar (varsayılan 61.5) |
+| Araç fotoğrafı | `public/cars/*.jpg`: şu an Wikimedia Commons fotoğrafları (CC BY-SA 4.0, kartta fotoğrafçı adı yazar). Müşterinin kendi fotoğrafları gelince dosyaları değiştirip `credit` satırlarını silin |
 
 Ayrıca:
 - `src/components/WhyUs.jsx`: `[AVANTAJLAR]` (sigorta, ücretsiz teslimat vb. müşteriyle teyit edilmeli)

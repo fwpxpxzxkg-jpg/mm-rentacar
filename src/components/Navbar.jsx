@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Menu, X } from 'lucide-react'
+import { CurrencyToggle } from '../currency'
 
 const LINKS = [
   ['Filo', '#filo'],
@@ -50,6 +51,7 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-3">
+          <CurrencyToggle className="hidden md:inline-flex" />
           <a href="#rezervasyon" className="btn-neon hidden !px-5 !py-2.5 sm:inline-flex">Hemen Kirala</a>
           <button
             className="grid h-11 w-11 place-items-center rounded-xl border border-white/10 lg:hidden"
@@ -78,7 +80,10 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
-            <li className="py-4">
+            <li className="flex justify-center border-t border-white/5 py-4">
+              <CurrencyToggle />
+            </li>
+            <li className="pb-4">
               <a href="#rezervasyon" onClick={() => setOpen(false)} className="btn-neon w-full">Hemen Kirala</a>
             </li>
           </motion.ul>

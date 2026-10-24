@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion'
 import { Gauge, Users, Zap, Settings2 } from 'lucide-react'
-import { CARS, formatPrice } from '../config'
+import { CARS } from '../config'
+import { CurrencyToggle, useCurrency } from '../currency'
 import CarArt from './CarArt'
 import Reveal, { SectionHead } from './Reveal'
 
@@ -35,6 +36,7 @@ function TiltCard({ children }) {
 }
 
 export default function Fleet({ onRent }) {
+  const { fmt } = useCurrency()
   return (
     <section id="filo" className="relative overflow-hidden py-28">
       <div className="pointer-events-none absolute -top-40 left-1/2 h-80 w-[60rem] -translate-x-1/2 rounded-full bg-racing/10 blur-[120px]" />
@@ -44,6 +46,9 @@ export default function Fleet({ onRent }) {
           title={<>Hayalindeki <span className="text-racing">Aracı</span> Seç</>}
           text="Bakımlı, sigortalı ve kapına teslim premium araçlar."
         />
+        <Reveal className="-mt-6 mb-12 flex justify-center">
+          <CurrencyToggle />
+        </Reveal>
 
         <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
           {CARS.map((car, i) => (
@@ -51,17 +56,38 @@ export default function Fleet({ onRent }) {
               <TiltCard>
                 <article className="glass relative flex h-full flex-col overflow-hidden transition-shadow duration-500 group-hover:shadow-[0_0_50px_-10px_rgba(225,6,0,.55)] group-hover:border-racing/40">
                   {/* Görsel alanı */}
-                  <div className="relative h-52 overflow-hidden bg-[radial-gradient(80%_70%_at_50%_100%,rgba(255,255,255,.08),transparent_70%)]">
-                    <span className="pointer-events-none absolute inset-x-0 top-5 select-none text-center font-display text-5xl font-black uppercase tracking-tight text-white/[0.05]">
-                      {car.brand}
-                    </span>
-                    <div className="absolute inset-x-6 bottom-3 transition-transform duration-700 group-hover:-translate-y-1 group-hover:scale-105">
-                      {car.image ? (
-                        <img src={car.image} alt={`${car.brand} ${car.model}`} loading="lazy" className="mx-auto max-h-44 object-contain" />
-                      ) : (
-                        <CarArt shape={car.shape} color={car.color} id={car.id} />
-                      )}
-                    </div>
+                  <div className="relative h-56 overflow-hidden bg-[radial-gradient(80%_70%_at_50%_100%,rgba(255,255,255,.08),transparent_70%)]">
+                    {car.image ? (
+                      <>
+                        <img
+                          src={car.image}
+                          alt={`${car.brand} ${car.model}`}
+                          loading="lazy"
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        />
+                        {/* Alt kısmı karta yumuşakça bağlayan karartma */}
+                        <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#0d0d0d] via-transparent to-black/30" />
+                        {car.credit && (
+                          <a
+                            href={car.credit.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="absolute bottom-1.5 right-2.5 text-[9px] text-white/40 hover:text-white/80"
+                          >
+                            Foto: {car.credit.by} · CC BY-SA 4.0
+                          </a>
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <span className="pointer-events-none absolute inset-x-0 top-5 select-none text-center font-display text-5xl font-black uppercase tracking-tight text-white/[0.05]">
+                          {car.brand}
+                        </span>
+                        <div className="absolute inset-x-6 bottom-3 transition-transform duration-700 group-hover:-translate-y-1 group-hover:scale-105">
+                          <CarArt shape={car.shape} color={car.color} id={car.id} />
+                        </div>
+                      </>
+                    )}
                     <span className="absolute left-5 top-5 rounded-full border border-gold/40 bg-ink/60 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-gold backdrop-blur">
                       {car.brand}
                     </span>
@@ -80,7 +106,7 @@ export default function Fleet({ onRent }) {
                     <div className="mt-auto flex items-end justify-between gap-4 border-t border-white/10 pt-5 mt-6">
                       <div>
                         <div className="text-[10px] uppercase tracking-[0.2em] text-white/40">Günlük</div>
-                        <div className="font-display text-2xl font-black">{formatPrice(car.price)}</div>
+                        <div className="font-display text-2xl font-black">{fmt(car.price)}</div>
                       </div>
                       <button onClick={() => onRent(car.id)} className="btn-neon !px-5 !py-2.5" aria-label={`${car.brand} ${car.model} kirala`}>
                         Kirala
